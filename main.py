@@ -56,8 +56,8 @@ def test(paragraph):
                 if word in paragraph2:
                     probabilities[subject] += 1
                     print(subject, word, str(probabilities[subject]) + "/" + str(total))
-        
-        probabilities[subject] = (probabilities[subject] / total) * 100
+
+        probabilities[subject] = round((probabilities[subject] / total) * 100, 2)
     
     print(probabilities)
     return max(probabilities, key = probabilities.get)
