@@ -108,6 +108,7 @@ def main():
     print("---------------------------------------------------------------\n")
     print("Would you like to train or would you like to test?")
     select()
+    main()
         
 words.justWords()
 rewrite()
