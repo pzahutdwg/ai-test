@@ -106,7 +106,7 @@ def select():
 def main():
     
     print("---------------------------------------------------------------\n")
-    print("Would you like to train or would you like to test?")
+    print("Would you like to train, exit or test?")
     select()
     main()
         
