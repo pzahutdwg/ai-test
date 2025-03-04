@@ -1,6 +1,6 @@
 import data
 import justWords as words
-# Most of the paragraphs are taken from Wikipedia
+# Most of the paragraphs (if not all) are taken from Wikipedia
 
 def rewrite():
     with open("data.py", "w") as file:
@@ -82,7 +82,7 @@ def select():
         print('Guessing from the following subjects:')
         for subject in data.subjects:
             print(subject)
-            
+
         print("The AI predicts that the subject of this paragraph is " + str(guess))
         print("Was that correct?")
         correct = input(">> ").lower()
