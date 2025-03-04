@@ -78,6 +78,11 @@ def select():
         paragraph = input(">> ")
         print("\n-----------------------------------------------------------------\n")
         guess = test(paragraph)
+
+        print('Guessing from the following subjects:')
+        for subject in data.subjects:
+            print(subject)
+            
         print("The AI predicts that the subject of this paragraph is " + str(guess))
         print("Was that correct?")
         correct = input(">> ").lower()
