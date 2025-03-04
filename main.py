@@ -1,30 +1,66 @@
 import data
+import justWords as words
+# Most of the paragraphs are taken from Wikipedia
+
+def rewrite():
+    with open("data.py", "w") as file:
+        file.write("subjects = " + str(data.subjects) + "\n")
 
 def train(paragraph, subject):
     subject = subject.lower()
     paragraph = paragraph.lower()
     paragraph = paragraph.split()
+    paragraph = words.justWords2(paragraph)
     
     for thing in data.subjects:
-        for extraName in thing["names"]:
+        for extraName in data.subjects[thing]["names"]:
             if subject == extraName:
                 subject = thing
+                newNick = thing
                 break
             
     
     if subject not in data.subjects:
-        with open("data.py", "w") as file:
-            data.subjects[subject] = {"names": [subject], "paragraphs": [paragraph]}
-            file.write("subjects = " + str(data.subjects))
-    else:
-                
-        for word in paragraph:
-            pass #! This is where I left off
+
+        data.subjects[subject] = {"names": [subject], "paragraphs": [paragraph]}
+        rewrite()
+
+    elif newNick not in data.subjects[subject]["names"]:
+
+        data.subjects[subject]["names"].append(newNick)
+        rewrite()
+    
+    data.subjects[subject]["paragraphs"].append(paragraph)
+    rewrite()
+
+    words.justWords()
+    rewrite()
 
 def test(paragraph):
     paragraph = paragraph.lower()
     paragraph = paragraph.split()
-    return paragraph
+    paragraph = words.justWords2(paragraph)
+
+    probabilities = {}
+
+    for subject in data.subjects:
+        probabilities[subject] = 0
+
+    for subject in data.subjects:
+        total = 0
+        for paragraph2 in data.subjects[subject]["paragraphs"]:
+            for word in paragraph:
+
+                total += 1
+
+                if word in paragraph2:
+                    probabilities[subject] += 1
+                    print(subject, word, str(probabilities[subject]) + "/" + str(total))
+        
+        probabilities[subject] = (probabilities[subject] / total) * 100
+    
+    print(probabilities)
+    return max(probabilities, key = probabilities.get)
 
 def select():
     mode = input(">> ").lower()
@@ -40,10 +76,26 @@ def select():
         
         print("Please enter the paragraph you would like to test the AI with.")
         paragraph = input(">> ")
-        print("The AI predicts that the subject of this paragraph is: " + str(test(paragraph)))
+        print("\n-----------------------------------------------------------------\n")
+        guess = test(paragraph)
+        print("The AI predicts that the subject of this paragraph is " + str(guess))
+        print("Was that correct?")
+        correct = input(">> ").lower()
+        if correct == "no":
+            print("What is the subject of this paragraph?")
+            subject = input(">> ")
+            print("Should I train the AI with this paragraph?")
+            toTrain = input(">> ").lower()
+            if toTrain == "yes":
+                train(paragraph, subject)
+        else:
+            train(paragraph, guess)
+
+    elif mode == "exit":
+        exit()
         
     else:
-        print("Invalid input. Please try again. (Enter \"train\" or \"test\")")
+        print("Invalid input. Please try again. (Enter \"train\", \"exit\", or \"test\")")
         select()
         
 def main():
@@ -52,7 +104,10 @@ def main():
     print("Would you like to train or would you like to test?")
     select()
         
-print("Welcome to my first attempt at an AI!")
+words.justWords()
+rewrite()
+
+print("\nWelcome to my first attempt at an AI!")
 print("The goal of this is to take a paragraph and guess it's subject.\n")
 
 main()
