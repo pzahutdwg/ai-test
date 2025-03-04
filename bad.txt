@@ -1,0 +1,3 @@
+�
+
+ctrl+f inside of data.py to fix errors
