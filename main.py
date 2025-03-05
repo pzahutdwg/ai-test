@@ -38,6 +38,7 @@ def train(paragraph, subject):
     rewrite()
 
     words.justWords()
+    words.justWords()
     rewrite()
 
 def test(paragraph):
@@ -69,7 +70,7 @@ def test(paragraph):
         probabilities[subject] = round((probabilities[subject] / total) * 100, 2)
     
     print(probabilities)
-    return max(probabilities, key = probabilities.get)
+    return max(probabilities, key = probabilities.get), probabilities[subject]
 
 def select():
     mode = input(">> ").lower()
@@ -86,14 +87,14 @@ def select():
         print("Please enter the paragraph you would like to test the AI with.")
         paragraph = input(">> ")
         print("\n-----------------------------------------------------------------\n")
-        guess = test(paragraph)
+        guess, percent = test(paragraph)
 
         print('\nGuessing from the following subjects:')
         for subject in data.subjects:
             print(subject)
         print()
 
-        print("The AI predicts that the subject of this paragraph is " + str(guess))
+        print("The AI predicts that the subject of this paragraph is " + str(guess), "(" + str(round(percent, 2)) + "% match)")
         print("Was that correct?")
         correct = input(">> ").lower()
         if correct == "no":
