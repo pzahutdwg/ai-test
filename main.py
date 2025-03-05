@@ -61,7 +61,7 @@ def test(paragraph):
 
                 if word in para:
                     probabilities[subject] += 1
-                    print("\"" + word + "\" was found in", subject + ". (" + str(probabilities[subject]) + "/" + str(total) + ")\"")
+                    print("\"" + word + "\" was found in", subject + ". (" + str(probabilities[subject]) + "/" + str(total) + ")")
         print()
 
     for subject in probabilities:
