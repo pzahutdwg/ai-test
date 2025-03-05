@@ -59,8 +59,8 @@ def test(paragraph):
             for word in paragraph:
 
                 if word in para:
-                    print("\"" + word + "\" was found in", subject + ". (" + str(probabilities[subject]) + "/" + str(total) + ")\"")
                     probabilities[subject] += 1
+                    print("\"" + word + "\" was found in", subject + ". (" + str(probabilities[subject]) + "/" + str(total) + ")\"")
         print()
 
     for subject in probabilities:
