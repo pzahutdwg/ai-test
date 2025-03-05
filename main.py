@@ -9,6 +9,7 @@ def backup():
 def rewrite():
     with open("data.py", "w") as file:
         file.write("subjects = " + str(data.subjects) + "\n")
+    backup()
 
 def train(paragraph, subject):
     subject = subject.lower()
@@ -53,24 +54,29 @@ def test(paragraph):
         probabilities[subject] = 0
 
     total = len(paragraph)
+    probToReturn = []
 
     for subject in data.subjects:
 
-        for para in data.subjects[subject]["paragraphs"]:
+        for word in paragraph:
 
-            for word in paragraph:
+            for para in data.subjects[subject]["paragraphs"]:
 
                 if word in para:
                     probabilities[subject] += 1
                     print("\"" + word + "\" was found in", subject + ". (" + str(probabilities[subject]) + "/" + str(total) + ")")
+                    continue
+
         print()
 
     for subject in probabilities:
 
+        probToReturn.append(round((probabilities[subject] / total) * 100, 2))
         probabilities[subject] = round((probabilities[subject] / total) * 100, 2)
     
     print(probabilities)
-    return max(probabilities, key = probabilities.get), probabilities[subject]
+    print(probToReturn)
+    return max(probabilities, key = probabilities.get), max(probToReturn)
 
 def select():
     mode = input(">> ").lower()
