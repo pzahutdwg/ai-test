@@ -26,6 +26,7 @@ def justWords():
                         new[subject]["paragraphs"][p][i] = new[subject]["paragraphs"][p][i].replace(char, "")
                         print(new[subject]["paragraphs"][p][i])
                         data.subjects = new
+    print()
 
 def justWords2(paragraph):
 
@@ -45,5 +46,5 @@ def justWords2(paragraph):
                 paragraph[i] = paragraph[i].replace(char, "")
                 print(paragraph[i], "<< after")
                 
-
+    print()
     return paragraph
