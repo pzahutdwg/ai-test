@@ -2,6 +2,10 @@ import data
 import justWords as words
 # Most of the paragraphs (if not all) are taken from Wikipedia
 
+def backup():
+    with open("justInCase.py", "w") as file:
+        file.write("subjects = " + str(data.subjects) + "\n")
+
 def rewrite():
     with open("data.py", "w") as file:
         file.write("subjects = " + str(data.subjects) + "\n")
@@ -46,16 +50,20 @@ def test(paragraph):
     for subject in data.subjects:
         probabilities[subject] = 0
 
+    total = len(paragraph)
+
     for subject in data.subjects:
-        total = 0
-        for paragraph2 in data.subjects[subject]["paragraphs"]:
+
+        for para in data.subjects[subject]["paragraphs"]:
+
             for word in paragraph:
 
-                total += 1
-
-                if word in paragraph2:
+                if word in para:
+                    print("\"" + word + "\" was found in", subject + ". (" + str(probabilities[subject]) + "/" + str(total) + ")\"")
                     probabilities[subject] += 1
-                    print(subject, word, str(probabilities[subject]) + "/" + str(total))
+        print()
+
+    for subject in probabilities:
 
         probabilities[subject] = round((probabilities[subject] / total) * 100, 2)
     
@@ -79,9 +87,10 @@ def select():
         print("\n-----------------------------------------------------------------\n")
         guess = test(paragraph)
 
-        print('Guessing from the following subjects:')
+        print('\nGuessing from the following subjects:')
         for subject in data.subjects:
             print(subject)
+        print()
 
         print("The AI predicts that the subject of this paragraph is " + str(guess))
         print("Was that correct?")
@@ -109,7 +118,8 @@ def main():
     print("Would you like to train, exit or test?")
     select()
     main()
-        
+
+backup()
 words.justWords()
 rewrite()
 
