@@ -44,6 +44,7 @@ def test(paragraph):
     paragraph = paragraph.lower()
     paragraph = paragraph.split()
     paragraph = words.justWords2(paragraph)
+    paragraph = words.justWords2(paragraph)
 
     probabilities = {}
 
