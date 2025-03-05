@@ -2,7 +2,7 @@ import data
 
 exclude = ['(', ')', '!','.',',','?',';',':','"','\'','[',']','{','}','<','>','/','\\','|','@','#','$','%','^',"&",'*','+','-','_','=','~','`','1','2','3','4','5','6','7','8','9','0', '�']
 
-excludedWords = ['of', 'as', 'to', 'and', 'the', 'a', 'to', 'of', 'as', 'is', 'in', 'that', 'there', 'are', 'eg', 'or', 'because', 'they', 'was', 'for', 'by', 'at', 'an', 'this', 'it', 'its', 'on', 'has', 'have', 'than' ,'', 'with', 'but', 'not', 'also', 'such', 'be', 'which', 'were', 'from', ' ', 'had', 'been', 'their', 'when', 'them']
+excludedWords = ['of', 'as', 'to', 'and', 'the', 'a', 'to', 'of', 'as', 'is', 'in', 'that', 'there', 'are', 'eg', 'or', 'because', 'they', 'was', 'for', 'by', 'at', 'an', 'this', 'it', 'its', 'on', 'has', 'have', 'than' ,'', 'with', 'but', 'not', 'also', 'such', 'be', 'which', 'were', 'from', ' ', 'had', 'been', 'their', 'when', 'them', 'usually', 'other', 'many', 'may', 'these', 'due', 'who']
 
 def justWords():
 
