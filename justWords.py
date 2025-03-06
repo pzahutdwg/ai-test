@@ -1,32 +1,28 @@
-import data
-
 exclude = ['(', ')', '!','.',',','?',';',':','"','\'','[',']','{','}','<','>','/','\\','|','@','#','$','%','^',"&",'*','+','-','_','=','~','`','1','2','3','4','5','6','7','8','9','0', '�']
 
-excludedWords = ['of', 'as', 'to', 'and', 'the', 'a', 'to', 'of', 'as', 'in', 'that', 'there', 'are', 'eg', 'or', 'because', 'they', 'was', 'for', 'by', 'at', 'an', 'this', 'it', 'its', 'on', 'has', 'have', 'than' ,'', 'with', 'but', 'not', 'also', 'such', 'be', 'which', 'were', 'from', ' ', 'had', 'been', 'their', 'when', 'them', 'usually', 'other', 'many', 'may', 'these', 'due', 'who', 'each', 'can', 'he', 'she']
+excludedWords = ['of', 'as', 'to', 'and', 'the', 'a', 'to', 'of', 'as', 'in', 'that', 'there', 'are', 'eg', 'or', 'because', 'they', 'was', 'for', 'by', 'at', 'an', 'this', 'it', 'its', 'on', 'has', 'have', 'than' ,'', 'with', 'but', 'not', 'also', 'such', 'be', 'which', 'were', 'from', ' ', 'had', 'been', 'their', 'when', 'them', 'usually', 'other', 'many', 'may', 'these', 'due', 'who', 'each', 'can', 'he', 'she', 'is', 'like', 'often', 'then', 'while', 'whether']
 
-def justWords():
+def justWords(new):
 
-    new = data.subjects
     for subject in new:
         for p, paragraph in enumerate(new[subject]["paragraphs"]):
             for i, word in enumerate(paragraph):
                 if word in excludedWords:
                     if word == '' or word == ' ':
-                        print("<blank> was excluded")
+                        print("<blank> was excluded from", subject)
                     else:
-                        print("\"" + word + "\"", "was excluded")
+                        print("\"" + word + "\"", "was excluded from", subject)
                     new[subject]["paragraphs"][p].remove(word)
-                    data.subjects = new
                     continue
                 
                 for char in word:
                     if char in exclude:
                         print(p)
-                        print(i, word)
+                        print(word, '<< before')
                         new[subject]["paragraphs"][p][i] = new[subject]["paragraphs"][p][i].replace(char, "")
-                        print(new[subject]["paragraphs"][p][i])
-                        data.subjects = new
+                        print(new[subject]["paragraphs"][p][i], '<< after')
     print()
+    return new
 
 def justWords2(paragraph):
 
@@ -34,9 +30,9 @@ def justWords2(paragraph):
 
         if word in excludedWords:
                     if word == '' or word == ' ':
-                        print("<blank> was excluded")
+                        print("<blank> was excluded from anonymous paragraph")
                     else:
-                        print("\"" + word + "\"", "was excluded")
+                        print("\"" + word + "\"", "was excluded from anonymous paragraph")
                     paragraph.remove(word)
                     continue
         
