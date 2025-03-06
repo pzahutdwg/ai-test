@@ -157,7 +157,6 @@ def select():
             train(paragraph, guess[0], data)
 
     elif mode == "exit":
-        backup()
         rewrite()
         exit()
 
