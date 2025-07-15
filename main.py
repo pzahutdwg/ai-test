@@ -106,7 +106,7 @@ def test(paragraph):
 
     probabilities = {}
 
-    for subject in data:
+    for subject in data.subjects:
         probabilities[subject] = 0
 
     total = len(paragraph)
@@ -147,7 +147,7 @@ def test(paragraph):
 def newNicks(subject):
     commons = {}
     print(subject)
-    for paragraph in data[subject]["paragraphs"]:
+    for paragraph in data.subjects[subject]["paragraphs"]:
         for word in paragraph:
             if word in commons:
                 commons[word] += 1
@@ -179,19 +179,20 @@ def select():
         guess, percent = test(paragraph)
 
         print("\nGuessing from the following subjects:")
-        for subject in data:
+        for subject in data.subjects:
             print(subject)
         print()
 
         print(
-            "The AI predicts that the subject of this paragraph is " + str(guess[0]),
-            "(" + str(round(percent[0], 2)) + "% match)",
+            "The AI predicts that the subject of this paragraph is " + str(guess),
+            "(" + str(round(percent, 2)) + "% match)",
         )
-        print(newNicks(guess[0]))
+        print(newNicks(guess))
 
-        print('Some other subjects that were also close guesses were', guess[1] + ' (' + str(round(percent[1], 2)) + '% match),', guess[2] + ' (' + str(round(percent [2], 2)) + '% mach), and', guess[3] + ' (' + str(round(percent[3], 2)) + '% match).')
+        # Remove the other subjects line since test() only returns top match
+        # print('Some other subjects that were also close guesses were', guess[1] + ' (' + str(round(percent[1], 2)) + '% match),', guess[2] + ' (' + str(round(percent [2], 2)) + '% mach), and', guess[3] + ' (' + str(round(percent[3], 2)) + '% match).')
 
-        print("Was", guess[0], "correct?")
+        print("Was", guess, "correct?")
         correct = input(">> ").lower()
         if correct == "no":
             print("What is the subject of this paragraph?")
@@ -199,16 +200,18 @@ def select():
             print("Should I train the AI with this paragraph?")
             toTrain = input(">> ").lower()
             if toTrain == "yes":
-                train(paragraph, subject, data)
+                train(paragraph, subject)  # Remove extra 'data' parameter
         else:
-            train(paragraph, guess[0], data)
+            train(paragraph, guess)  # Remove extra 'data' parameter
 
     elif mode == "exit":
         rewrite()
         exit()
 
     elif mode == "nicknames":
-        newNicks()
+        print("What subject would you like to see nicknames for?")
+        subject = input(">> ")
+        newNicks(subject)
 
     else:
         print(
@@ -226,7 +229,7 @@ def main():
 
 
 backup()
-data = words.justWords(data)
+words.justWords()
 rewrite()
 
 print("\nWelcome to my first attempt at an AI!")
