@@ -16,7 +16,6 @@ import random
 
 # Most of the paragraphs (if not all) are taken from Wikipedia
 
-
 def backup():
     try:
         with open("justInCase.py", "w", encoding="utf-8") as file:
@@ -107,7 +106,7 @@ def test(paragraph):
 
     probabilities = {}
 
-    for subject in data.subjects:
+    for subject in data:
         probabilities[subject] = 0
 
     total = len(paragraph)
@@ -147,7 +146,8 @@ def test(paragraph):
 
 def newNicks(subject):
     commons = {}
-    for paragraph in data.subjects[subject]["paragraphs"]:
+    print(subject)
+    for paragraph in data[subject]["paragraphs"]:
         for word in paragraph:
             if word in commons:
                 commons[word] += 1
@@ -156,14 +156,7 @@ def newNicks(subject):
 
     possibleNicks = sorted(commons, key=commons.get, reverse=True)
     print(
-        "Some common words in the "
-        + subject
-        + " subject are "
-        + str(possibleNicks[0])
-        + ",",
-        str(possibleNicks[1]) + ",",
-        "and",
-        str(possibleNicks[2]) + ".",
+        "Some common words in the " + subject + " subject are " + str(possibleNicks[0]) + ",", str(possibleNicks[1]) + ", and", str(possibleNicks[2]) + ".",
     )
     possibleNicks = [possibleNicks[0], possibleNicks[1], possibleNicks[2]]
 
@@ -186,16 +179,19 @@ def select():
         guess, percent = test(paragraph)
 
         print("\nGuessing from the following subjects:")
-        for subject in data.subjects:
+        for subject in data:
             print(subject)
         print()
 
         print(
-            "The AI predicts that the subject of this paragraph is " + str(guess),
-            "(" + str(round(percent, 2)) + "% match)",
+            "The AI predicts that the subject of this paragraph is " + str(guess[0]),
+            "(" + str(round(percent[0], 2)) + "% match)",
         )
-        print(newNicks(guess))
-        print("Was that correct?")
+        print(newNicks(guess[0]))
+
+        print('Some other subjects that were also close guesses were', guess[1] + ' (' + str(round(percent[1], 2)) + '% match),', guess[2] + ' (' + str(round(percent [2], 2)) + '% mach), and', guess[3] + ' (' + str(round(percent[3], 2)) + '% match).')
+
+        print("Was", guess[0], "correct?")
         correct = input(">> ").lower()
         if correct == "no":
             print("What is the subject of this paragraph?")
@@ -203,12 +199,11 @@ def select():
             print("Should I train the AI with this paragraph?")
             toTrain = input(">> ").lower()
             if toTrain == "yes":
-                train(paragraph, subject)
+                train(paragraph, subject, data)
         else:
-            train(paragraph, guess)
+            train(paragraph, guess[0], data)
 
     elif mode == "exit":
-        backup()
         rewrite()
         exit()
 
@@ -231,7 +226,7 @@ def main():
 
 
 backup()
-words.justWords()
+data = words.justWords(data)
 rewrite()
 
 print("\nWelcome to my first attempt at an AI!")
