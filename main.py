@@ -1,53 +1,103 @@
 import data
+d = data.subjects
 import justWords as words
+import requests
+from bs4 import BeautifulSoup as bs
+import random
+
+# url = "https://en.wikipedia.org/wiki/Mathematics"
+# response = requests.get(url)
+# soup = bs(response.content, 'html.parser')
+# paragraphs = soup.find_all('p')
+# print(f"Number of paragraphs found: {len(paragraphs)}")
+# for para in paragraphs:
+#     print(para.get_text(), end='\n=====================================================================\n\n')
+
 
 # Most of the paragraphs (if not all) are taken from Wikipedia
 
 
 def backup():
-    with open("justInCase.py", "w") as file:
-        file.write("subjects = " + str(data.subjects) + "\n")
-
+    try:
+        with open("justInCase.py", "w", encoding="utf-8") as file:
+            file.write("subjects = " + str(data.subjects) + "\n")
+    except Exception as e:
+        print(f"Error during backup: {e}")
 
 def rewrite():
-    with open("data.py", "r") as file:
-        content = file.read()
     with open("data.py", "w") as file:
         file.write("subjects = " + str(data.subjects) + "\n")
-        file.write(content.replace("�", ""))
     backup()
 
 
+def trainUrl(url, subject):
+    response = requests.get(url)
+    soup = bs(response.content, "html.parser")
+    paragraphs = soup.find_all("p")
+    subject = subject.lower()
+
+    for paragraph in paragraphs:
+        paragraph = paragraph.get_text().lower()
+        paragraph = paragraph.split()
+        paragraph = words.justWords2(paragraph)
+
+        print(paragraph)
+
+        for thing in data.subjects:
+            for extraName in data.subjects[thing]["names"]:
+                if subject == extraName:
+                    subject = thing
+                    newNick = thing
+                    break
+
+        if subject not in data.subjects:
+
+            data.subjects[subject] = {"names": [subject], "paragraphs": [paragraph]}
+            rewrite()
+
+        elif newNick not in data.subjects[subject]["names"]:
+
+            data.subjects[subject]["names"].append(newNick)
+            rewrite()
+
+        data.subjects[subject]["paragraphs"].append(paragraph)
+        rewrite()
+
+        words.justWords()
+        words.justWords()
+        rewrite()
+
+
 def train(paragraph, subject):
+    d = data.subjects
     subject = subject.lower()
     paragraph = paragraph.lower()
     paragraph = paragraph.split()
     paragraph = words.justWords2(paragraph)
+    print(d)
 
-    for thing in data.subjects:
-        for extraName in data.subjects[thing]["names"]:
+    newNick = subject  # Initialize newNick
+    for thing in d:
+        for extraName in d[thing]["names"]:
             if subject == extraName:
                 subject = thing
                 newNick = thing
                 break
 
-    if subject not in data.subjects:
-
-        data.subjects[subject] = {"names": [subject], "paragraphs": [paragraph]}
+    if subject not in d:
+        d[subject] = {"names": [subject], "paragraphs": [paragraph]}
         rewrite()
 
-    elif newNick not in data.subjects[subject]["names"]:
-
-        data.subjects[subject]["names"].append(newNick)
+    elif newNick not in d[subject]["names"]:
+        d[subject]["names"].append(newNick)
         rewrite()
 
-    data.subjects[subject]["paragraphs"].append(paragraph)
+    d[subject]["paragraphs"].append(paragraph)
     rewrite()
 
     words.justWords()
     words.justWords()
     rewrite()
-
 
 def test(paragraph):
     paragraph = paragraph.lower()
@@ -64,12 +114,11 @@ def test(paragraph):
     probToReturn = []
 
     for subject in data.subjects:
-
         for word in paragraph:
-
+            found = False  # Track if word was found in this subject
+            
             for para in data.subjects[subject]["paragraphs"]:
-
-                if word in para:
+                if word in para and not found:  # Only count once per subject
                     probabilities[subject] += 1
                     print(
                         '"' + word + '" was found in',
@@ -80,17 +129,19 @@ def test(paragraph):
                         + str(total)
                         + ")",
                     )
-                    continue
+                    found = True  # Mark as found to prevent double counting
+                    break  # Exit paragraph loop once found
 
         print()
 
     for subject in probabilities:
-
         probToReturn.append(round((probabilities[subject] / total) * 100, 2))
         probabilities[subject] = round((probabilities[subject] / total) * 100, 2)
 
     print(probabilities)
     print(probToReturn)
+    if not probToReturn:
+        return None, 0
     return max(probabilities, key=probabilities.get), max(probToReturn)
 
 
@@ -121,11 +172,11 @@ def select():
     mode = input(">> ").lower()
     if mode == "train":
 
-        print("Please enter the paragraph you would like to train the AI with.")
-        paragraph = input(">> ")
-        print("What is the subject of this paragraph?")
+        print("Please enter a wikipedia webpage URL.")
+        url = input(">> ")
+        print("What is the subject of this webpage?")
         subject = input(">> ")
-        train(paragraph, subject)
+        trainUrl(url, subject)
 
     elif mode == "test":
 
