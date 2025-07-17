@@ -156,6 +156,7 @@ excludedWords = [
     "would",
     "might",
     "must",
+    'i'
 ]
 
 
