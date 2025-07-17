@@ -36,6 +36,35 @@ exclude = [
     "�",
 ]
 
+excludeSubject = [
+    "!",
+    ".",
+    "?",
+    ";",
+    "[",
+    "]",
+    "{",
+    "}",
+    "<",
+    ">",
+    "/",
+    "\\",
+    "|",
+    "@",
+    "#",
+    "$",
+    "%",
+    "^",
+    "&",
+    "*",
+    "+",
+    "_",
+    "=",
+    "~",
+    "`",
+    "�",
+]
+
 excludedWords = [
     "of",
     "as",
@@ -186,3 +215,16 @@ def justWords2(paragraph):
 
     print()
     return cleaned_paragraph
+
+def justSubject(text):
+    cleaned_text = ""
+    for word in text.split():
+        word = word.split("[")[0]
+        word = unidecode.unidecode(word)
+        for char in excludeSubject:
+            word = word.replace(char, "")
+        if word.strip():
+            cleaned_text += " " + word
+            
+    print(cleaned_text.strip())
+    return cleaned_text.strip()

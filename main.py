@@ -3,7 +3,7 @@ d = data.subjects
 import justWords as words
 import requests
 from bs4 import BeautifulSoup as bs
-import random
+# import random
 
 # url = "https://en.wikipedia.org/wiki/Mathematics"
 # response = requests.get(url)
@@ -12,7 +12,6 @@ import random
 # print(f"Number of paragraphs found: {len(paragraphs)}")
 # for para in paragraphs:
 #     print(para.get_text(), end='\n=====================================================================\n\n')
-
 
 # Most of the paragraphs (if not all) are taken from Wikipedia
 
@@ -34,6 +33,7 @@ def trainUrl(url, subject):
     soup = bs(response.content, "html.parser")
     paragraphs = soup.find_all("p")
     subject = subject.lower()
+    subject = words.justSubject(subject)  # This returns a list
 
     for paragraph in paragraphs:
         paragraph = paragraph.get_text().lower()
@@ -227,12 +227,12 @@ def main():
     select()
     main()
 
+if __name__ == "__main__":
+    backup()
+    words.justWords()
+    rewrite()
 
-backup()
-words.justWords()
-rewrite()
+    print("\nWelcome to my first attempt at an AI!")
+    print("The goal of this is to take a paragraph and guess it's subject.\n")
 
-print("\nWelcome to my first attempt at an AI!")
-print("The goal of this is to take a paragraph and guess it's subject.\n")
-
-main()
+    main()
