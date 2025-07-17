@@ -181,25 +181,26 @@ def justWords():
                     cleaned_words.append(foo)
                 else:
                     if foo == "" or foo == " " or not foo.strip():
-                        print("<blank> was excluded")
+                        # print("<blank> was excluded")
+                        pass
                     else:
-                        print('"' + foo + '"', "was excluded")
+                        pass
+                        # print('"' + foo + '"', "was excluded")
 
             # Replace the paragraph with cleaned words
             new[subject]["paragraphs"][p] = cleaned_words
 
     data.subjects = new
-    print()
 
 
 def justWords2(paragraph):
     cleaned_paragraph = []
 
     for word in paragraph:
-        print(word, "<< before")
+        # print(word, "<< before")
         word = word.split("[")[0]
         word = unidecode.unidecode(word)  # Normalize unicode characters
-        print(word, "<< after")
+        # print(word, "<< after")
 
         # Clean characters
         for char in exclude:
@@ -209,11 +210,12 @@ def justWords2(paragraph):
             cleaned_paragraph.append(word)
         else:
             if word == "" or word == " " or not word.strip():
-                print("<blank> was excluded")
+                # print("<blank> was excluded")
+                pass
             else:
-                print('"' + word + '"', "was excluded")
+                pass
+                # print('"' + word + '"', "was excluded")
 
-    print()
     return cleaned_paragraph
 
 def justSubject(text):
@@ -226,5 +228,4 @@ def justSubject(text):
         if word.strip():
             cleaned_text += " " + word
             
-    print(cleaned_text.strip())
     return cleaned_text.strip()

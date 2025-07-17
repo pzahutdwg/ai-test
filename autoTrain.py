@@ -13,13 +13,9 @@ def printContent(url):
     paragraphs = soup.find_all('p')
     print(f"Number of paragraphs found: {len(paragraphs)}")
     print('\n=====================================================================\n')
-    for para in paragraphs:
-        if para != '':
-            print(para.get_text(), end='\n=====================================================================\n\n')
 
 def train(url, title):
     title = title.lower()
-    print("Doing the thing")
     title = words.justSubject(title)
     if not title in data:
         m.trainUrl(url, title)
@@ -29,8 +25,11 @@ def main():
     
     amount = int(input("How many random pages do you want to train? "))
     print("Training random pages...")
+    iterations = 0
     
     for _ in range(amount):
+        iterations += 1
+        print(f"Iteration {iterations}/{amount}.\n")
         bad = True
 
         while bad:
@@ -43,5 +42,7 @@ def main():
                 bad = False
             except (DisambiguationError, PageError):
                 continue
+        
+        print('\n=====================================================================\n')
             
 main()

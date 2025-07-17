@@ -40,7 +40,6 @@ def trainUrl(url, subject):
         paragraph = paragraph.split()
         paragraph = words.justWords2(paragraph)
 
-        print(paragraph)
 
         for thing in data.subjects:
             for extraName in data.subjects[thing]["names"]:
@@ -73,7 +72,6 @@ def train(paragraph, subject):
     paragraph = paragraph.lower()
     paragraph = paragraph.split()
     paragraph = words.justWords2(paragraph)
-    print(d)
 
     newNick = subject  # Initialize newNick
     for thing in d:
@@ -131,7 +129,7 @@ def test(paragraph):
                     found = True  # Mark as found to prevent double counting
                     break  # Exit paragraph loop once found
 
-        print()
+        
 
     for subject in probabilities:
         probToReturn.append(round((probabilities[subject] / total) * 100, 2))
@@ -181,7 +179,7 @@ def select():
         print("\nGuessing from the following subjects:")
         for subject in data.subjects:
             print(subject)
-        print()
+        
 
         print(
             "The AI predicts that the subject of this paragraph is " + str(guess),
