@@ -5,11 +5,12 @@ from bs4 import BeautifulSoup as bs
 import main as m
 import data as d
 import justWords as words
+import time
 data = d.subjects
 
 def printContent(url):
     response = requests.get(url)
-    soup = bs(response.content, 'html.parser')
+    soup = bs(response.content, features='html.parser')
     paragraphs = soup.find_all('p')
     print(f"Number of paragraphs found: {len(paragraphs)}")
     print('\n=====================================================================\n')
@@ -26,6 +27,8 @@ def main():
     amount = int(input("How many random pages do you want to train? "))
     print("Training random pages...")
     iterations = 0
+    
+    start = time.time()
     
     for _ in range(amount):
         iterations += 1
@@ -44,5 +47,6 @@ def main():
                 continue
         
         print('\n=====================================================================\n')
-            
+    end = time.time()
+    print(f"Training completed in {end - start:.2f} seconds (About {round((end - start) / amount, 2)} seconds per page).")
 main()

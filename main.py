@@ -51,17 +51,13 @@ def trainUrl(url, subject):
         if subject not in data.subjects:
 
             data.subjects[subject] = {"names": [subject], "paragraphs": [paragraph]}
-            rewrite()
 
         elif newNick not in data.subjects[subject]["names"]:
 
             data.subjects[subject]["names"].append(newNick)
-            rewrite()
 
         data.subjects[subject]["paragraphs"].append(paragraph)
-        rewrite()
 
-        words.justWords()
         words.justWords()
         rewrite()
 
