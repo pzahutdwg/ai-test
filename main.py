@@ -117,17 +117,10 @@ def test(paragraph):
             for para in data.subjects[subject]["paragraphs"]:
                 if word in para and not found:  # Only count once per subject
                     probabilities[subject] += 1
-                    print(
-                        '"' + word + '" was found in',
-                        subject
-                        + ". ("
-                        + str(probabilities[subject])
-                        + "/"
-                        + str(total)
-                        + ")",
-                    )
+                    print(f'"{word}" was found in "{subject}". ({probabilities[subject]}/{total})')
                     found = True  # Mark as found to prevent double counting
                     break  # Exit paragraph loop once found
+        print()
 
         
 
@@ -135,12 +128,9 @@ def test(paragraph):
         probToReturn.append(round((probabilities[subject] / total) * 100, 2))
         probabilities[subject] = round((probabilities[subject] / total) * 100, 2)
 
-    print(probabilities)
-    print(probToReturn)
     if not probToReturn:
         return None, 0
-    return max(probabilities, key=probabilities.get), max(probToReturn)
-
+    return sorted(probabilities, key=probabilities.get, reverse=True)[:5], sorted(probToReturn, reverse=True)[:5]
 
 def newNicks(subject):
     commons = {}
@@ -153,9 +143,7 @@ def newNicks(subject):
                 commons[word] = 1
 
     possibleNicks = sorted(commons, key=commons.get, reverse=True)
-    print(
-        "Some common words in the " + subject + " subject are " + str(possibleNicks[0]) + ",", str(possibleNicks[1]) + ", and", str(possibleNicks[2]) + ".",
-    )
+    print(f'Some common words in the {subject} subject are "{possibleNicks[0]}", "{possibleNicks[1]}", and "{possibleNicks[2]}".')
     possibleNicks = [possibleNicks[0], possibleNicks[1], possibleNicks[2]]
 
 
@@ -173,24 +161,21 @@ def select():
 
         print("Please enter the paragraph you would like to test the AI with.")
         paragraph = input(">> ")
-        print("\n-----------------------------------------------------------------\n")
-        guess, percent = test(paragraph)
+        print("\n=================================================================\n")
+        guesses, percents = test(paragraph)
 
         print("\nGuessing from the following subjects:")
         for subject in data.subjects:
-            print(subject)
-        
+            print(subject, end=', ')
 
-        print(
-            "The AI predicts that the subject of this paragraph is " + str(guess),
-            "(" + str(round(percent, 2)) + "% match)",
-        )
-        print(newNicks(guess))
+        print("\n=================================================================\n")
 
-        # Remove the other subjects line since test() only returns top match
-        # print('Some other subjects that were also close guesses were', guess[1] + ' (' + str(round(percent[1], 2)) + '% match),', guess[2] + ' (' + str(round(percent [2], 2)) + '% mach), and', guess[3] + ' (' + str(round(percent[3], 2)) + '% match).')
+        print(f'The AI predicts that the subject of this paragraph is "{guesses[0]}", ({round(percents[0], 2)}% match).')
+        newNicks(guesses[0])
 
-        print("Was", guess, "correct?")
+        print(f'Some other close guesses were "{guesses[1]}" ({round(percents[1], 2)}% match), "{guesses[2]}" ({round(percents[2], 2)}% match), "{guesses[3]}" ({round(percents[3], 2)}% match), and "{guesses[4]}" ({round(percents[4], 2)}% match).\n')
+
+        print("Was", guesses[0], "correct?")
         correct = input(">> ").lower()
         if correct == "no":
             print("What is the subject of this paragraph?")
@@ -200,7 +185,7 @@ def select():
             if toTrain == "yes":
                 train(paragraph, subject)  # Remove extra 'data' parameter
         else:
-            train(paragraph, guess)  # Remove extra 'data' parameter
+            train(paragraph, guesses[0])  # Remove extra 'data' parameter
 
     elif mode == "exit":
         rewrite()
@@ -220,7 +205,7 @@ def select():
 
 def main():
 
-    print("---------------------------------------------------------------\n")
+    print("===============================================================\n")
     print("Would you like to train, add nicknames (nicknames), exit or test?")
     select()
     main()
