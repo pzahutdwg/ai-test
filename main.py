@@ -40,7 +40,6 @@ def trainUrl(url, subject):
         paragraph = paragraph.split()
         paragraph = words.justWords2(paragraph)
 
-
         for thing in data.subjects:
             for extraName in data.subjects[thing]["names"]:
                 if subject == extraName:
