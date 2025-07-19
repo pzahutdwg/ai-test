@@ -25,6 +25,7 @@ def train(url, title):
 def main():
     
     amount = int(input("How many random pages do you want to train? "))
+    antiStub = int(input('Minimum page length: '))
     print("Training random pages...")
     iterations = 0
     
@@ -39,6 +40,9 @@ def main():
             try:
                 title = wiki.random(1)
                 url = wiki.page(title).url
+                if len(wiki.page(title).content) < antiStub:
+                    print(f"Skipping {title} due to insufficient content length.")
+                    continue
                 print(f"URL for '{title}': {url}")
                 # printContent(url)
                 train(url, title)
