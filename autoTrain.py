@@ -35,15 +35,20 @@ def main():
         iterations += 1
         print(f"Iteration {iterations}/{amount}.\n")
         bad = True
+        skipped = False
 
         while bad:
             try:
                 title = wiki.random(1)
                 url = wiki.page(title).url
                 if len(wiki.page(title).content) < antiStub:
-                    print(f"Skipping {title} due to insufficient content length.")
+                    print(f"Skipping {title} due to insufficient content length. ({len(wiki.page(title).content)})")
+                    skipped = True
                     continue
+                if skipped:
+                    print()
                 print(f"URL for '{title}': {url}")
+                print("Length of content (characters):", len(wiki.page(title).content))
                 # printContent(url)
                 train(url, title)
                 bad = False
